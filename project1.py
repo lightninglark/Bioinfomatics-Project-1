@@ -27,4 +27,12 @@ __email__ = "AUTHOR_EMAIL"
 __status__ = "homework"
 
 
+from Bio import pairwise2
+
 def main():
+
+	human = open("FASTAs/Others/human.fasta", "r").read()
+	redjunglefowl =  open("FASTAs/Others/redjunglefowl.fasta", "r").read()
+
+	alignments = pairwise2.align.globalxx(human, redjunglefowl)
+	print(alignments)
