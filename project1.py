@@ -1,12 +1,4 @@
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-from tables.idxutils import ccs_ultralight
-from tables.idxutils import ccs_ultralight
-from Bio.FSSP.fssp_rec import align
-from Bio.SeqIO.SffIO import _sff_read_seq_record
-from Bio.FSSP.fssp_rec import align
-from Bio.Align import MultipleSeqAlignment
-from Bio.SeqRecord import SeqRecord
-from Bio.Alphabet import generic_dna
 Created on Apr 21, 2017
 
 Project 1: Project 1 ADT is for analyzing Rhodopsin genes in various species
@@ -144,7 +136,8 @@ def processAlignments():
     print(len(__alignedGenes[2]))
     print(len(__alignedGenes[3]))
     
-    
+    #Must splice genes based on the shortest alignment to create aligned file
+    # (all genes must be the same length)
     for x in range(0,__numberOfGenes):
         temp = __alignedGenes[x]
         
