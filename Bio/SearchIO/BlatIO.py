@@ -377,6 +377,7 @@ def _create_hsp(hid, qid, psl):
 
 
 class BlatPslParser(object):
+
     """Parser for the BLAT PSL format."""
 
     def __init__(self, handle, pslx=False):
@@ -514,6 +515,7 @@ class BlatPslParser(object):
 
 
 class BlatPslIndexer(SearchIndexer):
+
     """Indexer class for BLAT PSL output."""
 
     _parser = BlatPslParser
@@ -588,6 +590,7 @@ class BlatPslIndexer(SearchIndexer):
 
 
 class BlatPslWriter(object):
+
     """Writer for the blat-psl format."""
 
     def __init__(self, handle, header=False, pslx=False):

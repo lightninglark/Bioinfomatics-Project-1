@@ -11,28 +11,13 @@ import numpy
 
 
 def m2rotaxis(m):
-    """Return angles, axis pair that corresponds to rotation matrix m.
-
-    The case where `m` is the identity matrix corresponds to a singularity where any
-    rotation axis is valid. In that case, `Vector([1,0,0])`, is returned.
-    """
-    eps = 1e-5
-
-    # Check for singularities a la http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToAngle/
-    if abs(m[0, 1] - m[1, 0]) < eps and abs(m[0, 2] - m[2, 0]) < eps and abs(m[1, 2] - m[2, 1]) < eps:
-        # Singularity encountered. Check if its 0 or 180 deg
-        if abs(m[0, 1] + m[1, 0]) < eps and abs(m[0, 2] + m[2, 0]) < eps and abs(m[1, 2] + m[2, 1]) < eps and abs(m[0, 0] + m[1, 1] + m[2, 2] - 3) < eps:
-            angle = 0
-        else:
-            angle = numpy.pi
-    else:
-        # Angle always between 0 and pi
-        # Sense of rotation is defined by axis orientation
-        t = 0.5 * (numpy.trace(m) - 1)
-        t = max(-1, t)
-        t = min(1, t)
-        angle = numpy.arccos(t)
-
+    """Return angles, axis pair that corresponds to rotation matrix m."""
+    # Angle always between 0 and pi
+    # Sense of rotation is defined by axis orientation
+    t = 0.5 * (numpy.trace(m) - 1)
+    t = max(-1, t)
+    t = min(1, t)
+    angle = numpy.arccos(t)
     if angle < 1e-15:
         # Angle is 0
         return 0.0, Vector(1, 0, 0)
@@ -105,7 +90,8 @@ def rotaxis2m(theta, vector):
 
     @return: The rotation matrix, a 3x3 Numeric array.
     """
-    vector = vector.normalized()
+    vector = vector.copy()
+    vector.normalize()
     c = numpy.cos(theta)
     s = numpy.sin(theta)
     t = 1 - c
@@ -141,8 +127,8 @@ def refmat(p, q):
     @type p,q: L{Vector}
     @return: The mirror operation, a 3x3 Numeric array.
     """
-    p = p.normalized()
-    q = q.normalized()
+    p.normalize()
+    q.normalize()
     if (p - q).norm() < 1e-5:
         return numpy.identity(3)
     pq = p - q
@@ -299,19 +285,11 @@ class Vector(object):
         return abs(sum(self._ar * self._ar))
 
     def normalize(self):
-        """Normalize the Vector object.
-
-        Changes the state of `self` and doesn't return a value. If you need to chain function
-        calls or create a new object use the `normalized` method.
-        """
-        if self.norm():
-            self._ar = self._ar / self.norm()
+        """Normalize the Vector."""
+        self._ar = self._ar / self.norm()
 
     def normalized(self):
-        """Return a normalized copy of the Vector.
-
-        To avoid allocating new objects use the `normalize` method.
-        """
+        """Return a normalized copy of the Vector."""
         v = self.copy()
         v.normalize()
         return v

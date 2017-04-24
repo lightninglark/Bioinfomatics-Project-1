@@ -182,7 +182,6 @@ def PirIterator(handle):
             return  # StopIteration
     assert False, "Should not reach this line"
 
-
 if __name__ == "__main__":
     from Bio._utils import run_doctest
     run_doctest(verbose=0)

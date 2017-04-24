@@ -3,7 +3,8 @@
 # as part of this package.
 #
 
-"""Main entry point for sequencing related command line application wrappers."""
+"""Main entry point for application command line wrappers related to sequencing.
+"""
 from ._Novoalign import NovoalignCommandline
 from ._bwa import BwaIndexCommandline, BwaAlignCommandline, BwaSamseCommandline
 from ._bwa import BwaSampeCommandline, BwaBwaswCommandline

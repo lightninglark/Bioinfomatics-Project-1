@@ -54,6 +54,7 @@ class AbstractDPAlgorithms(object):
         Durbin et al.
 
         Returns:
+
         o A dictionary containing the forward variables. This has keys of the
         form (state letter, position in the training sequence), and values
         containing the calculated forward variable.
@@ -118,6 +119,7 @@ class AbstractDPAlgorithms(object):
         Durbin et al.
 
         Returns:
+
         o A dictionary containing the backwards variables. This has keys
         of the form (state letter, position in the training sequence),
         and values containing the calculated backward variable.
@@ -199,6 +201,7 @@ class ScaledDPAlgorithms(AbstractDPAlgorithms):
         calculated so far.
 
         Returns:
+
         o The calculated scaling variable for the sequence item.
         """
         # all of the different letters the state can have

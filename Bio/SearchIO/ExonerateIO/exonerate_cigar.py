@@ -25,6 +25,7 @@ _RE_CIGAR = re.compile(r"""^cigar:\s+
 
 
 class ExonerateCigarParser(_BaseExonerateParser):
+
     """Parser for Exonerate cigar strings."""
 
     _ALN_MARK = 'cigar'
@@ -84,6 +85,7 @@ class ExonerateCigarParser(_BaseExonerateParser):
 
 
 class ExonerateCigarIndexer(ExonerateVulgarIndexer):
+
     """Indexer class for exonerate cigar lines."""
 
     _parser = ExonerateCigarParser

@@ -56,7 +56,6 @@ def _maketrans(complement_mapping):
     else:
         return string.maketrans(before, after)
 
-
 _dna_complement_table = _maketrans(ambiguous_dna_complement)
 _rna_complement_table = _maketrans(ambiguous_rna_complement)
 
@@ -2276,7 +2275,6 @@ def _test():
     import doctest
     doctest.testmod(optionflags=doctest.IGNORE_EXCEPTION_DETAIL)
     print("Done")
-
 
 if __name__ == "__main__":
     _test()

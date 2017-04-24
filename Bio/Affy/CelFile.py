@@ -4,7 +4,9 @@
 # license.  Please see the LICENSE file that should have been included
 # as part of this package.
 
-"""Reading information from Affymetrix CEL files version 3 and 4."""
+"""
+Reading information from Affymetrix CEL files version 3 and 4.
+"""
 
 from __future__ import print_function
 import sys
@@ -21,7 +23,6 @@ except ImportError:
 class ParserError(ValueError):
     def __init__(self, *args):
         super(ParserError, self).__init__(*args)
-
 
 _modeError = ParserError("You're trying to open an Affymetrix v4"
                          " CEL file. You have to use a read binary mode,"
@@ -392,7 +393,6 @@ def read_v3(handle):
         else:
             continue
     return record
-
 
 if __name__ == "__main__":
     from Bio._utils import run_doctest

@@ -52,6 +52,7 @@ Other public methods of this module:
    be called additionally.
 
 Examples:
+
     >>> from Bio.SeqUtils import MeltingTemp as mt
     >>> from Bio.Seq import Seq
     >>> mystring = 'CGTTCCAAAGATGTGGGCATGAGCTTAC'
@@ -477,6 +478,7 @@ def salt_correction(Na=0, K=0, Tris=0, Mg=0, dNTPs=0, method=1, seq=None):
           (Owczarzy et al. (2008), Biochemistry 47: 5336-5353)
 
     Examples:
+
         >>> from Bio.SeqUtils import MeltingTemp as mt
         >>> print('%0.2f' % mt.salt_correction(Na=50, method=1))
         -21.60
@@ -577,6 +579,7 @@ def chem_correction(melting_temp, DMSO=0, fmd=0, DMSOfactor=0.75,
      - GC: GC content in percent.
 
     Examples:
+
         >>> from Bio.SeqUtils import MeltingTemp as mt
         >>> mt.chem_correction(70)
         70
@@ -619,6 +622,7 @@ def Tm_Wallace(seq, check=True, strict=True):
     Non-DNA characters (e.g., E, F, J, !, 1, etc) are ignored by this method.
 
     Examples:
+
         >>> from Bio.SeqUtils import MeltingTemp as mt
         >>> mt.Tm_Wallace('ACGTTGCAATGCCGTA')
         48.0

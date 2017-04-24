@@ -625,7 +625,9 @@ class WellRecord(object):
             self._signals = signals
 
     def _interpolate(self, time):
-        """Linear interpolation of the signals at certain time points (PRIVATE)."""
+        """Private method to get a linear interpolation of the signals
+        at certain time points.
+        """
         times = sorted(self._signals.keys())
 
         return np.interp(time,
@@ -634,7 +636,8 @@ class WellRecord(object):
                          left=np.nan, right=np.nan)
 
     def __setitem__(self, time, signal):
-        """Assign a signal at a certain time point."""
+        """Assign a signal at a certain time point.
+        """
         try:
             time = float(time)
         except ValueError:
@@ -647,7 +650,8 @@ class WellRecord(object):
         self._signals[time] = signal
 
     def __getitem__(self, time):
-        """Returns a subset of signals or a single signal."""
+        """Returns a subset of signals or a single signal.
+        """
         if isinstance(time, slice):
             # Fix the missing values in the slice
             if time.start is None:

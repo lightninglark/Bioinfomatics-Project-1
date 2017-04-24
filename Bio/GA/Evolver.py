@@ -20,7 +20,6 @@ class SteadyStateEvolver(object):
     This implements a Steady State GA, where the population of individuals
     is evolved in place.
     """
-
     def __init__(self):
         raise NotImplementedError("Need to code this.")
 
@@ -31,19 +30,18 @@ class GenerationEvolver(object):
     This implements a Generational GA, in which the population moves from
     generation to generation.
     """
-
     def __init__(self, starting_population, selector):
         """Initialize the evolver.
 
         Arguments:
 
-        - starting_population - An initial set of individuals to begin
-          the evolution process from. This should be a list of Organism
-          objects.
+        o starting_population -- An initial set of individuals to begin
+        the evolution process from. This should be a list of Organism
+        objects.
 
-        - selector - A Selection object that implements selection, along
-          with mutation and crossover to select a new population from a
-          given population.
+        o selector -- A Selection object that implements selection, along
+        with mutation and crossover to select a new population from a
+        given population.
         """
         self._population = starting_population
         self._selector = selector
@@ -53,13 +51,13 @@ class GenerationEvolver(object):
 
         Arguments:
 
-        - stopping_criteria - A function which, when passed the current
-          individuals in the population, will determine when to stop
-          the evolution process.
+        o stoppping_criteria -- A function which, when passed the current
+        individuals in the population, will determine when to stop
+        the evolution process.
 
         Returns:
 
-        - The final evolved population.
+        o The final evolved population.
         """
         while not(stopping_criteria(self._population)):
             try:

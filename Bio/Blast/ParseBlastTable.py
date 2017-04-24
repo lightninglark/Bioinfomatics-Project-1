@@ -39,7 +39,6 @@ class BlastTableRec(object):
     def add_entry(self, entry):
         self.entries.append(entry)
 
-
 reader_keywords = {'BLASTP': 'version',
                    'Iteration': 'iteration',
                    'Query': 'query',

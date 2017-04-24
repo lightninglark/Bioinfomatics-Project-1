@@ -3,8 +3,7 @@
 # license.  Please see the LICENSE file that should have been included
 # as part of this package.
 #
-"""Run and process output from the Wise2 package tools.
-
+"""
 Bio.Wise contains modules for running and processing the output of
 some of the models in the Wise2 package by Ewan Birney available from:
 ftp://ftp.ebi.ac.uk/pub/software/unix/wise2/
@@ -68,7 +67,9 @@ def _build_align_cmdline(cmdline, pair, output_filename, kbyte=None, force_type=
 
 
 def align(cmdline, pair, kbyte=None, force_type=None, dry_run=False, quiet=False, debug=False):
-    """Run an alignment. Returns a filehandle."""
+    """
+    Returns a filehandle
+    """
     if not pair or len(pair) != 2:
         raise ValueError("Expected pair of filename, not %s" % repr(pair))
 
@@ -117,7 +118,8 @@ def align(cmdline, pair, kbyte=None, force_type=None, dry_run=False, quiet=False
 
 
 def all_pairs(singles):
-    """Generate pairs list for all-against-all alignments.
+    """
+    Generate pairs list for all-against-all alignments
 
     >>> all_pairs(range(4))
     [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
@@ -139,7 +141,6 @@ def main():
 def _test(*args, **keywds):
     import doctest
     doctest.testmod(sys.modules[__name__], *args, **keywds)
-
 
 if __name__ == "__main__":
     if __debug__:

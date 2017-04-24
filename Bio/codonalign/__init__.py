@@ -4,15 +4,19 @@
 # license.  Please see the LICENSE file that should have been included
 # as part of this package.
 
-"""Code for dealing with Codon Alignments."""
+"""Code for dealing with Codon Alignment.
+"""
 from __future__ import print_function
 
 from Bio import BiopythonWarning
 from Bio import BiopythonExperimentalWarning
 
-from Bio._py3k import zip
+try:
+    from itertools import izip
+except ImportError:
+    izip = zip
+# from itertools import izip
 
-from Bio.Alphabet import _get_base_alphabet
 from Bio.SeqRecord import SeqRecord
 
 from Bio.codonalign.codonseq import CodonSeq
@@ -75,9 +79,9 @@ def build(pro_align, nucl_seqs, corr_dict=None, gap_char='-', unknown='X',
                         "object")
     # check the alphabet of pro_align
     for pro in pro_align:
-        if not isinstance(_get_base_alphabet(pro.seq.alphabet), ProteinAlphabet):
+        if not isinstance(pro.seq.alphabet, ProteinAlphabet):
             raise TypeError("Alphabet Error!\nThe input alignment should be "
-                            "a *PROTEIN* alignemnt, found %r" % pro.seq.alphabet)
+                            "a *PROTEIN* alignment")
     if alphabet is None:
         alphabet = _get_codon_alphabet(codon_table, gap_char=gap_char)
     # check whether the number of seqs in pro_align and nucl_seqs is
@@ -133,7 +137,7 @@ def build(pro_align, nucl_seqs, corr_dict=None, gap_char='-', unknown='X',
     # set up pro-nucl correspondence based on corr_method
     # corr_method = 0, consecutive pairing
     if corr_method == 0:
-        pro_nucl_pair = zip(pro_align, nucl_seqs)
+        pro_nucl_pair = izip(pro_align, nucl_seqs)
     # corr_method = 1, keyword pairing
     elif corr_method == 1:
         nucl_id = set(nucl_seqs.keys())
@@ -187,9 +191,10 @@ def build(pro_align, nucl_seqs, corr_dict=None, gap_char='-', unknown='X',
 
 
 def _codons2re(codons):
-    """Generate regular expression based on a given list of codons (PRIVATE)."""
+    """Generate regular expression based on a given list of codons
+    """
     reg = ''
-    for i in zip(*codons):
+    for i in izip(*codons):
         if len(set(i)) == 1:
             reg += ''.join(set(i))
         else:
@@ -250,8 +255,7 @@ def _check_corr(pro, nucl, gap_char='-', codon_table=default_codon_table,
         else:
             return alpha
 
-    if not isinstance(_get_base_alphabet(get_alpha(nucl.seq.alphabet)),
-                      NucleotideAlphabet):
+    if not isinstance(get_alpha(nucl.seq.alphabet), NucleotideAlphabet):
         raise TypeError("Alphabet for nucl should be an instance of "
                         "NucleotideAlphabet, {0} "
                         "detected".format(str(nucl.seq.alphabet)))

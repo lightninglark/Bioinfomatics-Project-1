@@ -107,6 +107,7 @@ class Record(object):
     just interested in looking at GenBank data.
 
     Attributes:
+
         - locus - The name specified after the LOCUS keyword in the GenBank
           record. This may be the accession number, or a clone id or something else.
         - size - The size of the record.
@@ -511,6 +512,7 @@ class Reference(object):
     """Hold information from a GenBank reference.
 
     Attributes:
+
         - number - The number of the reference in the listing of references.
         - bases - The bases in the sequence the reference refers to.
         - authors - String with all of the authors.
@@ -626,6 +628,7 @@ class Feature(object):
     """Hold information about a Feature in the Feature Table of GenBank record.
 
     Attributes:
+
         - key - The key name of the featue (ie. source)
         - location - The string specifying the location of the feature.
         - qualfiers - A listing Qualifier objects in the feature.
@@ -658,6 +661,7 @@ class Qualifier(object):
     """Hold information about a qualifier in a GenBank feature.
 
     Attributes:
+
         - key - The key name of the qualifier (ie. /organism=)
         - value - The value of the qualifier ("Dictyostelium discoideum").
     """
