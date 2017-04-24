@@ -518,6 +518,7 @@ class GenePopController(object):
         """Calculates allele and genotype frequencies per locus and per sample.
 
         Parameters:
+
           - fname - file name
 
         Returns tuple with 2 elements:
@@ -710,9 +711,11 @@ class GenePopController(object):
         """Executes GenePop and gets Fst/Fis/Fit (all populations)
 
         Parameters:
+
         - fname - file name
 
         Returns:
+
         - (multiLocusFis, multiLocusFst, multiLocus Fit),
         - Iterator of tuples
           (Locus name, Fis, Fst, Fit, Qintra, Qinter)

@@ -114,6 +114,7 @@ class Record(list):
     """Represent a list of jaspar motifs.
 
     Attributes:
+
      - version: The JASPAR version used
 
     """

@@ -5,7 +5,7 @@
 
 """Package for working with phylogenetic trees.
 
-See Also: http://biopython.org/wiki/Phylo
+See also: http://biopython.org/wiki/Phylo
 """
 
 from Bio.Phylo._io import parse, read, write, convert

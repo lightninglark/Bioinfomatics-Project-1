@@ -128,7 +128,6 @@ class NeighborSearch(object):
             if level == l:
                 return next_level_pair_list
 
-
 if __name__ == "__main__":
 
     from numpy.random import random

@@ -9,6 +9,7 @@ from Bio.SearchIO._index import SearchIndexer
 
 
 class _BaseHmmerTextIndexer(SearchIndexer):
+
     """Base indexer class for HMMER plain text output."""
 
     def __init__(self, *args, **kwargs):

@@ -30,7 +30,6 @@ class CDAOError(Exception):
     """Exception raised when CDAO object construction cannot continue."""
     pass
 
-
 try:
     import rdflib
     rdfver = rdflib.__version__

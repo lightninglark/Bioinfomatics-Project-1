@@ -14,6 +14,7 @@ from .hmmer3_tab import Hmmer3TabParser, Hmmer3TabIndexer
 
 
 class Hmmer3DomtabParser(Hmmer3TabParser):
+
     """Base hmmer3-domtab iterator."""
 
     def _parse_row(self):
@@ -151,6 +152,7 @@ class Hmmer3DomtabParser(Hmmer3TabParser):
 
 
 class Hmmer3DomtabHmmhitParser(Hmmer3DomtabParser):
+
     """Parser for the HMMER domain table format that assumes HMM profile
     coordinates are hit coordinates."""
 
@@ -158,6 +160,7 @@ class Hmmer3DomtabHmmhitParser(Hmmer3DomtabParser):
 
 
 class Hmmer3DomtabHmmqueryParser(Hmmer3DomtabParser):
+
     """Parser for the HMMER domain table format that assumes HMM profile
     coordinates are query coordinates."""
 
@@ -165,6 +168,7 @@ class Hmmer3DomtabHmmqueryParser(Hmmer3DomtabParser):
 
 
 class Hmmer3DomtabHmmhitIndexer(Hmmer3TabIndexer):
+
     """Indexer class for HMMER domain table output that assumes HMM profile
     coordinates are hit coordinates."""
 
@@ -173,6 +177,7 @@ class Hmmer3DomtabHmmhitIndexer(Hmmer3TabIndexer):
 
 
 class Hmmer3DomtabHmmqueryIndexer(Hmmer3TabIndexer):
+
     """Indexer class for HMMER domain table output that assumes HMM profile
     coordinates are query coordinates."""
 
@@ -181,6 +186,7 @@ class Hmmer3DomtabHmmqueryIndexer(Hmmer3TabIndexer):
 
 
 class Hmmer3DomtabHmmhitWriter(object):
+
     """Writer for hmmer3-domtab output format which writes hit coordinates
     as HMM profile coordinates."""
 
@@ -302,6 +308,7 @@ class Hmmer3DomtabHmmhitWriter(object):
 
 
 class Hmmer3DomtabHmmqueryWriter(Hmmer3DomtabHmmhitWriter):
+
     """Writer for hmmer3-domtab output format which writes query coordinates
     as HMM profile coordinates."""
 

@@ -300,6 +300,7 @@ def _parse_hit_or_query_line(line):
 
 
 class _BaseExonerateParser(object):
+
     """Abstract iterator for exonerate format."""
 
     _ALN_MARK = None
@@ -483,6 +484,7 @@ class _BaseExonerateParser(object):
 
 
 class _BaseExonerateIndexer(SearchIndexer):
+
     """Indexer class for Exonerate plain text."""
 
     _parser = None  # should be defined by subclass

@@ -736,6 +736,7 @@ class Relation(object):
     (http://www.kegg.jp/kegg/xml/docs/)
 
     Attributes:
+
         - entry1       The first Entry object node ID defining the
                        relation (int)
         - entry2       The second Entry object node ID defining the

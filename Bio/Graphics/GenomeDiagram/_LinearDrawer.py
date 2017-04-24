@@ -52,6 +52,7 @@ class LinearDrawer(AbstractDrawer):
         Provides:
 
         Methods:
+
         o __init__(self, ...) Called on instantiation
 
         o set_page_size(self, pagesize, orientation)    Set the page size to the
@@ -119,6 +120,7 @@ class LinearDrawer(AbstractDrawer):
                                         in the sequence, on the diagram.
 
         Attributes:
+
         o tracklines    Boolean for whether to draw lines delineating tracks
 
         o pagesize      Tuple describing the size of the page in pixels

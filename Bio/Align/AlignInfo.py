@@ -436,7 +436,8 @@ class SummaryInfo(object):
         return PSSM(pssm_info)
 
     def _get_base_letters(self, letters):
-        """Create a zeroed dictionary with all of the specified letters (PRIVATE)."""
+        """Create a zeroed dictionary with all of the specified letters.
+        """
         base_info = {}
         for letter in letters:
             base_info[letter] = 0
@@ -444,7 +445,8 @@ class SummaryInfo(object):
         return base_info
 
     def _get_gap_char(self):
-        """Return the gap character used in the alignment (PRIVATE)."""
+        """Return the gap character used in the alignment
+        """
         try:
             gap_char = self.alignment._alphabet.gap_char
         except AttributeError:
@@ -734,12 +736,14 @@ class PSSM(object):
         return out
 
     def get_residue(self, pos):
-        """Return the residue letter at the specified position."""
+        """Return the residue letter at the specified position.
+        """
         return self.pssm[pos][0]
 
 
 def print_info_content(summary_info, fout=None, rep_record=0):
-    """3 column output: position, aa in representative sequence, ic_vector value."""
+    """ Three column output: position, aa in representative sequence,
+        ic_vector value"""
     fout = fout or sys.stdout
     if not summary_info.ic_vector:
         summary_info.information_content()

@@ -199,7 +199,6 @@ class FeatureSet(object):
 # RUN AS SCRIPT
 ################################################################################
 
-
 if __name__ == '__main__':
     from Bio import SeqIO
 

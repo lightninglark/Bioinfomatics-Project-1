@@ -43,12 +43,12 @@ class Async(object):
 
         Real _run_program to be implemented by concrete classes.
 
-        Parameters:
+        parameters:
         program String identifying program.
         parameters List of String parameters.
         input_files Hash of Input file descriptors.
 
-        Returns:
+        returns:
         Task Id.
 
         The input_files hash key is the path that is passed
@@ -74,10 +74,10 @@ class Async(object):
     def get_result(self, id):
         """ Returns results for a certain Id, the info for that Id is forgotten.
 
-        Parameters:
+        parameters:
         id Id of the task.
 
-        Returns:
+        returns:
         (return_code, output_files) return code and file access object.
 
         The output_files hash key is a relative file name, and the value a

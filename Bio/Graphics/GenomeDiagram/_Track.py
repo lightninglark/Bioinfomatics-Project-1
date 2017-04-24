@@ -44,6 +44,7 @@ class Track(object):
         Provides:
 
         Methods:
+
         o __init__(self, name=None, ...) Called on instantiation
 
         o add_set(self, set)    Add a FeatureSet or GraphSet to the diagram
@@ -66,6 +67,7 @@ class Track(object):
         o __str__(self) Returns a formatted string describing the track
 
         Attributes:
+
         o height    Int describing the relative height to other trackscale_fontsizes in the
                     diagram
 

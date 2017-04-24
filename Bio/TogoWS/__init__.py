@@ -341,5 +341,4 @@ def _open(url, post=None):
     # examine the start of the data returned back.
     return _binary_to_string_handle(handle)
 
-
 _open.previous = 0

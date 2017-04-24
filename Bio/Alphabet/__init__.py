@@ -76,7 +76,6 @@ class Alphabet(object):
             # TODO - Raise NotImplementedError and handle via subclass?
             return self._case_less()
 
-
 generic_alphabet = Alphabet()
 
 
@@ -84,7 +83,6 @@ class SingleLetterAlphabet(Alphabet):
     """Generic alphabet with letters of size one."""
     size = 1
     letters = None   # string of all letters in the alphabet
-
 
 single_letter_alphabet = SingleLetterAlphabet()
 
@@ -95,7 +93,6 @@ class ProteinAlphabet(SingleLetterAlphabet):
     """Generic single letter protein alphabet."""
     pass
 
-
 generic_protein = ProteinAlphabet()
 
 # ########## DNA
@@ -105,14 +102,12 @@ class NucleotideAlphabet(SingleLetterAlphabet):
     """Generic single letter nucleotide alphabet."""
     pass
 
-
 generic_nucleotide = NucleotideAlphabet()
 
 
 class DNAAlphabet(NucleotideAlphabet):
     """Generic single letter DNA alphabet."""
     pass
-
 
 generic_dna = DNAAlphabet()
 
@@ -123,7 +118,6 @@ generic_dna = DNAAlphabet()
 class RNAAlphabet(NucleotideAlphabet):
     """Generic single letter RNA alphabet."""
     pass
-
 
 generic_rna = RNAAlphabet()
 

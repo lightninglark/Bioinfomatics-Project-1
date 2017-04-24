@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-"""Example of generating a substitution matrix from an alignment."""
+"""Example of generating a substitution matrix from an alignment.
+"""
 # standard library
 from __future__ import print_function
 
