@@ -1,4 +1,5 @@
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+from setuptools.dist import sequence
 Created on Apr 21, 2017
 
 Project 1: Project 1 ADT is for analyzing Rhodopsin genes in various species
@@ -41,13 +42,15 @@ __cephGenes = []
 __sequences = []
 __alignedGenes = []
 __alignedGenesNorm = []
-__numberOfGenes = 4
+__numberOfGenes = 0 #starts at one for bootstrap case.
 
 def main():
 
     #Parse input fasta file into list of strings containing genes
     infile = open ("sequence.txt", "r")
     parseInputFile(infile)
+    
+    print(__numberOfGenes)
     
     #Do alignments, grab alignments and splice to same length 
     #to generate alignment file
@@ -67,10 +70,12 @@ postcondition     : genes added to __cephGenes
 def parseInputFile(infile):
     
     global __cephGenes       # To modify global __avgGeneLength
+    global __numberOfGenes
     
     tempGene = ''                # Holds the current gene
     
     tempLine = infile.readline() # boot strap case, remove first line
+    __numberOfGenes +=1
     
     while True:
         
@@ -89,6 +94,7 @@ def parseInputFile(infile):
         
         if tempLine[0] == '>':
             
+            __numberOfGenes += 1
             # On a heading line, tempGene done, add str and clear for next
             #add gene here list here
             __cephGenes.append(tempGene)
@@ -123,18 +129,17 @@ def processAlignments():
     for x in range(0, __numberOfGenes):
      
         alignments = pairwise2.align.globalxx(__cephGenes[0], __cephGenes[x])
-         
-        print(pairwise2.format_alignment(*alignments[x]))
-        print()
-     
+        
         __alignedGenes.append(alignments[0][1]) #add alignment to aligned genes
+        
+        print(pairwise2.format_alignment(*alignments[0]))
+        print()
      
     
     print("Length of alignments before splicing:")
-    print(len(__alignedGenes[0]))
-    print(len(__alignedGenes[1]))
-    print(len(__alignedGenes[2]))
-    print(len(__alignedGenes[3]))
+    for x in range(0, __numberOfGenes):
+        print(len(__alignedGenes[x]))
+    
     
     #Must splice genes based on the shortest alignment to create aligned file
     # (all genes must be the same length)
@@ -144,12 +149,17 @@ def processAlignments():
         __alignedGenesNorm.append(temp[0:1360])
     
     # Need to redo below, hard way alignment creation
-    align1 = MultipleSeqAlignment([
-                SeqRecord(Seq(__alignedGenesNorm[0], generic_dna,), id="Octopus bimaculoides"),
-                SeqRecord(Seq(__alignedGenesNorm[1], generic_dna,), id="Enteroctopus dofleini"),
-                SeqRecord(Seq(__alignedGenesNorm[2], generic_dna,), id="Sthenoteuthis oualaniensis"),
-                SeqRecord(Seq(__alignedGenesNorm[3], generic_dna,), id="Vampyroteuthis infernalis"),
-             ])
+        
+    
+    #tempSeqList = []
+    
+    # bootstrap case, requre
+    align1 = MultipleSeqAlignment([SeqRecord(Seq(__alignedGenesNorm[0], generic_dna,), id="Octopus bimaculoides")])
+    
+    # need to change "id=x" to hashmap of names
+    for x in range(1, __numberOfGenes):
+        align1.append(SeqRecord(Seq(__alignedGenesNorm[x], generic_dna,), id=''+str(x))) 
+    
     
     #generate aligned file
     AlignIO.write(align1, "asequences.txt", "fasta")
