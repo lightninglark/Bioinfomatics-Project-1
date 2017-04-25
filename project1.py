@@ -38,11 +38,10 @@ from Bio.Phylo.TreeConstruction import DistanceCalculator
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
 
 
-__cephGenes = []
-__sequences = []
-__alignedGenes = []
-__alignedGenesNorm = []
-__numberOfGenes = 0 #starts at one for bootstrap case.
+__sequences = []        #holds genes, need to rename
+__alignedGenes = []     #holds aligned gene sequences
+__alignedGenesNorm = [] #holds aligned gene sequences (normalized (same length)
+__numberOfGenes = 0     #starts at one for bootstrap case.
 
 def main():
 
@@ -65,11 +64,11 @@ def main():
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 parseInputFile    : Reads input file and adds genes to global list
 precondition      : input file must exist and be in FASTA format
-postcondition     : genes added to __cephGenes
+postcondition     : genes added to __sequences
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''     
 def parseInputFile(infile):
     
-    global __cephGenes       # To modify global __avgGeneLength
+    global __sequences       # To modify global __avgGeneLength
     global __numberOfGenes
     
     tempGene = ''                # Holds the current gene
@@ -89,7 +88,7 @@ def parseInputFile(infile):
             tempGene += strippedTempLine
             
             #add gene to list here
-            __cephGenes.append(tempGene)
+            __sequences.append(tempGene)
             break
         
         if tempLine[0] == '>':
@@ -97,7 +96,7 @@ def parseInputFile(infile):
             __numberOfGenes += 1
             # On a heading line, tempGene done, add str and clear for next
             #add gene here list here
-            __cephGenes.append(tempGene)
+            __sequences.append(tempGene)
             
             tempGene = ''
         
@@ -118,7 +117,7 @@ postcondition     : matrix is updated with alignments scores
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''     
 def processAlignments():
     #globals
-    global __cephGenes
+    global __sequences
     global __numberOfGenes
     global __alignedGenes
     global __alignedGenesNorm
@@ -128,7 +127,7 @@ def processAlignments():
     # others, will implement "to every other" functionality
     for x in range(0, __numberOfGenes):
      
-        alignments = pairwise2.align.globalxx(__cephGenes[0], __cephGenes[x])
+        alignments = pairwise2.align.globalxx(__sequences[0], __sequences[x])
         
         __alignedGenes.append(alignments[0][1]) #add alignment to aligned genes
         
