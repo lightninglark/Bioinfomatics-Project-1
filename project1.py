@@ -1,4 +1,6 @@
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+from Crypto.PublicKey.DSA import construct
+from Tests.test_TreeConstruction import NNITreeSearcherTest
 Created on Apr 21, 2017
 
 Project 1: Project 1 ADT is for analyzing Rhodopsin genes in various species
@@ -34,8 +36,11 @@ from Bio.Align import MultipleSeqAlignment
 from Bio import Phylo
 from Bio import AlignIO
 from Bio.Alphabet import generic_dna
-from Bio.Phylo.TreeConstruction import DistanceCalculator
+from Bio.Phylo.TreeConstruction import DistanceCalculator, ParsimonyScorer,\
+    NNITreeSearcher, ParsimonyTreeConstructor
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
+from Bio.SubsMat.MatrixInfo import blosum62
+#from Bio.Phylo.Consensus import *
 
 
 __sequences = []        # holds raw sequences from file
@@ -155,10 +160,11 @@ def processAlignments():
     # Run global alignments (first gene acts as a reference gene)
     for x in range(0, __numberOfGenes):
 
-        alignments = pairwise2.align.globalxx(__sequences[0], __sequences[x])
+        alignments = pairwise2.align.globalds(__sequences[0], __sequences[x], blosum62, -10., -0.5)
 
         __alignedGenes.append(alignments[0][1]) #add alignment to aligned genes
-
+        
+        print(__speciesNames[x] + ": ")
         print(pairwise2.format_alignment(*alignments[0]))
         print()
 
@@ -215,9 +221,35 @@ def phyloTreeMaker(aln):
     print()
 
     #generate image file (will pop up)
-    # Phylo.draw(tree)
+    # Distance tree
     Phylo.draw(tree, show_confidence=True)
+    
 
+    #Parsimony Tree
+    scorer = ParsimonyScorer()
+    searcher = NNITreeSearcher(scorer)
+    
+    constructorParse = ParsimonyTreeConstructor(searcher, tree)
+    parse_tree = constructorParse.build_tree(aln)
+    Phylo.draw(parse_tree, show_confidence=True)
+    
+
+    #Bootstrap (consensus trees)
+    #msas = bootstrap(aln, 100)
+#     calculatorCon = DistanceCalculator('blosum62')
+#     constructorCon = DistanceTreeConstructor(calculatorCon)
+#     treeCon = bootstrap_trees(aln, 5, constructorCon)
+    
+    
+#     strict_tree = strict_consensus(treeCon)
+#     Phylo.draw(strict_tree, show_confidence=True)
+    
+#     majority_tree = majority_consensus(treeCon, 0.5)
+#     Phylo.draw(majority_tree, show_confidence=True)
+    
+#     adam_tree = adam_consensus(treeCon)
+#     Phylo.draw(adam_tree, show_confidence=True)
+    
     return
 
 main()
