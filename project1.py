@@ -182,6 +182,7 @@ def phyloTreeMaker(aln):
     #Create basic text tree and display
     constructor = DistanceTreeConstructor(calculator, 'nj')
     tree = constructor.build_tree(aln)
+    
     print(tree)
     print()
     
@@ -190,7 +191,8 @@ def phyloTreeMaker(aln):
     print()
     
     #generate image file (will pop up)
-    Phylo.draw(tree)
+    # need to generate confidence values
+    Phylo.draw(tree, show_confidence=True)
     
     return
     
