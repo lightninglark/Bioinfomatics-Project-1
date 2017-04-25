@@ -1,5 +1,4 @@
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-from setuptools.dist import sequence
 Created on Apr 21, 2017
 
 Project 1: Project 1 ADT is for analyzing Rhodopsin genes in various species
@@ -13,6 +12,7 @@ Dependencies: BioPython
 
 Assumptions and Implementation Notes:
             -- All dependencies must be accessible and configured correctly.
+            -- input file "sequence.txt" must be in FASTA format
 
 
 @authors: Camilo Acosta, Jayse Farrel, Jessica Kunder, Ryan Palm
@@ -38,11 +38,11 @@ from Bio.Phylo.TreeConstruction import DistanceCalculator
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
 
 
-__sequences = []
-__sequences = []
-__alignedGenes = []
-__alignedGenesNorm = []
-__numberOfGenes = 0 #starts at one for bootstrap case.
+__sequences = []        # holds raw sequences from file
+__alignedGenes = []     # holds aligned sequences
+__alignedGenesNorm = [] # holds spliced (snipped) aligned gene sequences
+__speciesNames = []     # holds the name of each specie
+__numberOfGenes = 0     # holds number of genes
 
 def main():
 
@@ -50,10 +50,8 @@ def main():
     infile = open ("sequence.txt", "r")
     parseInputFile(infile)
 
-    print(__numberOfGenes)
-
-    #Do alignments, grab alignments and splice to same length
-    #to generate alignment file
+    # Do alignments, grab alignments and splice to same length
+    # to generate alignment file
     processAlignments()
 
     #send alignment file to phyloTreeMaker to turn into a tree
@@ -65,17 +63,22 @@ def main():
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 parseInputFile    : Reads input file and adds genes to global list
 precondition      : input file must exist and be in FASTA format
-postcondition     : genes added to __sequences
+postcondition     : genes added to __sequences, __numberOfGenes incremented
+                    by one for each gene added, species name added to 
+                    __speciesNames
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 def parseInputFile(infile):
-
-    global __sequences       # To modify global __avgGeneLength
+    
+    # Forward reference to globals
+    global __sequences
     global __numberOfGenes
-
+    
     tempGene = ''                # Holds the current gene
 
-    tempLine = infile.readline() # boot strap case, remove first line
-    __numberOfGenes +=1
+    # Boot strap case (first gene case)
+    tempLine = infile.readline() # grab first line
+    speciesNameParser(tempLine)  # Parse species name and add to global list
+    __numberOfGenes +=1          # add one gene/species
 
     while True:
 
@@ -93,7 +96,9 @@ def parseInputFile(infile):
             break
 
         if tempLine[0] == '>':
-
+            
+            speciesNameParser(tempLine)  # Parse species name
+            
             __numberOfGenes += 1
             # On a heading line, tempGene done, add str and clear for next
             #add gene here list here
@@ -107,25 +112,47 @@ def parseInputFile(infile):
             strippedTempLine = tempLine.strip()
             tempGene += strippedTempLine
 
-
-
     return
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-processAlignments : align's genes and adds to matrix
-precondition      : genes list must be initialized
-postcondition     : matrix is updated with alignments scores
+processAlignments : parses species name from fasta header line
+precondition      : headerline must be formated like ">Species_Name|..."
+postcondition     : species name is added to __speciesName list
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+def speciesNameParser(headerLine):
+    
+    # Forward reference
+    global __speciesNames
+    
+    counter = 0 #counts length of name (in characters)
+    
+    while headerLine[counter] != '|':
+        
+        counter += 1
+    
+    tempSpecieName = headerLine[1:counter]
+    
+    __speciesNames.append(tempSpecieName)
+    
+    return
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+processAlignments : does gene alignment (comparison to a reference (first
+                  : gene in inputfile (sequences.txt)))
+precondition      : no significant precondition
+postcondition     : aligned and "trimmed" genes are added to asequences.txt
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 def processAlignments():
-    #globals
+    
+    # Forward reference
     global __sequences
     global __numberOfGenes
     global __alignedGenes
     global __alignedGenesNorm
     global __numberOfGenes
+    global __speciesNames
 
-    # run global alignments (right now only compairing the first gene to all
-    # others, will implement "to every other" functionality
+    # Run global alignments (first gene acts as a reference gene)
     for x in range(0, __numberOfGenes):
 
         alignments = pairwise2.align.globalxx(__sequences[0], __sequences[x])
@@ -135,43 +162,39 @@ def processAlignments():
         print(pairwise2.format_alignment(*alignments[0]))
         print()
 
-
-    print("Length of alignments before splicing:")
-    for x in range(0, __numberOfGenes):
-        print(len(__alignedGenes[x]))
-
+    # Find shortest length of all aligned genes (all genes must be same
+    # character length)
     shortestLength = len(min(__alignedGenes, key=len))
-    # print("Shortest Sequence: " + str(shortestLength))
-    #Must splice genes based on the shortest alignment to create aligned file
-    # (all genes must be the same length)
+
+    # trim all genes based on shortest length variable
     for x in range(0,__numberOfGenes):
         temp = __alignedGenes[x]
 
         __alignedGenesNorm.append(temp[0:shortestLength])
 
-    # Need to redo below, hard way alignment creation
+    # Create MultipleSeqAlignment needed for creation of distance map 
+    # (and phylogenetic tree)
+    
+    # Bootstrap case (required by MultipleSeqAlignment constructor)
+    align1 = MultipleSeqAlignment([SeqRecord(Seq(__alignedGenesNorm[0], 
+                                   generic_dna,), id=__speciesNames[0])
+                                   ])
 
-
-    #tempSeqList = []
-
-    # bootstrap case, requre
-    align1 = MultipleSeqAlignment([SeqRecord(Seq(__alignedGenesNorm[0], generic_dna,), id="Octopus bimaculoides")])
-
-    # need to change "id=x" to hashmap of names
+    # Append each additional alignment to the MSA
     for x in range(1, __numberOfGenes):
-        align1.append(SeqRecord(Seq(__alignedGenesNorm[x], generic_dna,), id=''+str(x)))
-
+        align1.append(SeqRecord(Seq(__alignedGenesNorm[x], generic_dna,), 
+                                id=__speciesNames[x]))
 
     #generate aligned file
     AlignIO.write(align1, "asequences.txt", "fasta")
 
     return
 
-
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 phyloTreeMaker    : creates a phylogenetic tree from an aligned fasta file
-precondition      : input file must be aligned
-postcondition     : phylogenetic trees printed to output
+precondition      : input file must exist and be aligned (and trimmed)
+postcondition     : Distance map and Phylogenetic Tree structures
+                    printed to output
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 def phyloTreeMaker(aln):
     #make calculator object using default 'identiy' format (for dna)
