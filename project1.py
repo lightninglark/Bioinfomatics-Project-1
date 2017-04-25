@@ -38,10 +38,11 @@ from Bio.Phylo.TreeConstruction import DistanceCalculator
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
 
 
-__sequences = []        #holds genes, need to rename
-__alignedGenes = []     #holds aligned gene sequences
-__alignedGenesNorm = [] #holds aligned gene sequences (normalized (same length)
-__numberOfGenes = 0     #starts at one for bootstrap case.
+__sequences = []
+__sequences = []
+__alignedGenes = []
+__alignedGenesNorm = []
+__numberOfGenes = 0 #starts at one for bootstrap case.
 
 def main():
 
@@ -64,25 +65,11 @@ def main():
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 parseInputFile    : Reads input file and adds genes to global list
 precondition      : input file must exist and be in FASTA format
-<<<<<<< HEAD
-<<<<<<< HEAD
-postcondition     : genes added to __cephGenes
+postcondition     : genes added to __sequences
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 def parseInputFile(infile):
 
-    global __cephGenes       # To modify global __avgGeneLength
-=======
-=======
->>>>>>> 8988cbd7ccc0f4fe0ab10fcedf2d939d6de15510
-postcondition     : genes added to __sequences
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''     
-def parseInputFile(infile):
-    
     global __sequences       # To modify global __avgGeneLength
-<<<<<<< HEAD
->>>>>>> 1a0f58ab9acce60d8af35c16c3e79afed3f187ff
-=======
->>>>>>> 8988cbd7ccc0f4fe0ab10fcedf2d939d6de15510
     global __numberOfGenes
 
     tempGene = ''                # Holds the current gene
@@ -110,16 +97,8 @@ def parseInputFile(infile):
             __numberOfGenes += 1
             # On a heading line, tempGene done, add str and clear for next
             #add gene here list here
-<<<<<<< HEAD
-<<<<<<< HEAD
-            __cephGenes.append(tempGene)
-
-=======
-=======
->>>>>>> 8988cbd7ccc0f4fe0ab10fcedf2d939d6de15510
             __sequences.append(tempGene)
-            
->>>>>>> 1a0f58ab9acce60d8af35c16c3e79afed3f187ff
+
             tempGene = ''
 
         else:
@@ -148,18 +127,9 @@ def processAlignments():
     # run global alignments (right now only compairing the first gene to all
     # others, will implement "to every other" functionality
     for x in range(0, __numberOfGenes):
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-        alignments = pairwise2.align.globalxx(__cephGenes[0], __cephGenes[x])
-
-=======
-=======
->>>>>>> 8988cbd7ccc0f4fe0ab10fcedf2d939d6de15510
-     
         alignments = pairwise2.align.globalxx(__sequences[0], __sequences[x])
-        
->>>>>>> 1a0f58ab9acce60d8af35c16c3e79afed3f187ff
+
         __alignedGenes.append(alignments[0][1]) #add alignment to aligned genes
 
         print(pairwise2.format_alignment(*alignments[0]))
@@ -171,7 +141,7 @@ def processAlignments():
         print(len(__alignedGenes[x]))
 
     shortestLength = len(min(__alignedGenes, key=len))
-    print("Shortest Sequence: " + str(shortestLength))
+    # print("Shortest Sequence: " + str(shortestLength))
     #Must splice genes based on the shortest alignment to create aligned file
     # (all genes must be the same length)
     for x in range(0,__numberOfGenes):
@@ -214,7 +184,6 @@ def phyloTreeMaker(aln):
     #Create basic text tree and display
     constructor = DistanceTreeConstructor(calculator, 'nj')
     tree = constructor.build_tree(aln)
-    
     print(tree)
     print()
 
@@ -223,14 +192,9 @@ def phyloTreeMaker(aln):
     print()
 
     #generate image file (will pop up)
-<<<<<<< HEAD
-    Phylo.draw(tree)
-
-=======
-    # need to generate confidence values
+    # Phylo.draw(tree)
     Phylo.draw(tree, show_confidence=True)
-    
->>>>>>> 8988cbd7ccc0f4fe0ab10fcedf2d939d6de15510
+
     return
 
 main()
