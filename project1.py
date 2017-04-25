@@ -40,7 +40,7 @@ from Bio.Phylo.TreeConstruction import DistanceCalculator, ParsimonyScorer,\
     NNITreeSearcher, ParsimonyTreeConstructor
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
 from Bio.SubsMat.MatrixInfo import blosum62
-#from Bio.Phylo.Consensus import *
+from Bio.Phylo.Consensus import *
 
 
 __sequences = []        # holds raw sequences from file
@@ -233,22 +233,22 @@ def phyloTreeMaker(aln):
     parse_tree = constructorParse.build_tree(aln)
     Phylo.draw(parse_tree, show_confidence=True)
     
-
+    '''
+    # This tree works, but is EXTREMELY slow. I'd suggest adjusting the
+    # lower if it is taking too long. 100 seems to take 5-10 minutes,
+    # but the higher the replication number, the better the results.
+    
     #Bootstrap (consensus trees)
-    #msas = bootstrap(aln, 100)
-#     calculatorCon = DistanceCalculator('blosum62')
-#     constructorCon = DistanceTreeConstructor(calculatorCon)
-#     treeCon = bootstrap_trees(aln, 5, constructorCon)
     
+    replicationNumber = 100
     
-#     strict_tree = strict_consensus(treeCon)
-#     Phylo.draw(strict_tree, show_confidence=True)
+    calculatorCon = DistanceCalculator('blosum62')
+    constructorCon = DistanceTreeConstructor(calculatorCon)
+    treeCon = bootstrap_trees(aln, replicationNumber, constructorCon)
     
-#     majority_tree = majority_consensus(treeCon, 0.5)
-#     Phylo.draw(majority_tree, show_confidence=True)
-    
-#     adam_tree = adam_consensus(treeCon)
-#     Phylo.draw(adam_tree, show_confidence=True)
+    majority_tree = majority_consensus(treeCon, 0.5)
+    Phylo.draw(majority_tree, show_confidence=True)
+    '''
     
     return
 
