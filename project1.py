@@ -69,15 +69,15 @@ def main():
 parseInputFile    : Reads input file and adds genes to global list
 precondition      : input file must exist and be in FASTA format
 postcondition     : genes added to __sequences, __numberOfGenes incremented
-                    by one for each gene added, species name added to 
+                    by one for each gene added, species name added to
                     __speciesNames
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 def parseInputFile(infile):
-    
+
     # Forward reference to globals
     global __sequences
     global __numberOfGenes
-    
+
     tempGene = ''                # Holds the current gene
 
     # Boot strap case (first gene case)
@@ -101,18 +101,14 @@ def parseInputFile(infile):
             break
 
         if tempLine[0] == '>':
-            
             speciesNameParser(tempLine)  # Parse species name
-            
             __numberOfGenes += 1
             # On a heading line, tempGene done, add str and clear for next
             #add gene here list here
             __sequences.append(tempGene)
-
             tempGene = ''
 
         else:
-
             # building each gene line by line.
             strippedTempLine = tempLine.strip()
             tempGene += strippedTempLine
@@ -125,20 +121,21 @@ precondition      : headerline must be formated like ">Species_Name|..."
 postcondition     : species name is added to __speciesName list
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 def speciesNameParser(headerLine):
-    
+
     # Forward reference
     global __speciesNames
-    
+
     counter = 0 #counts length of name (in characters)
-    
-    while headerLine[counter] != '|':
-        
-        counter += 1
-    
-    tempSpecieName = headerLine[1:counter]
-    
+
+    #changing using find method
+    # while headerLine[counter] != '|':
+        # counter += 1
+
+    #everything after the < token until the first pipe
+    tempSpecieName = headerLine[1:headerLine.find('|')]
+    # tempSpecieName = headerLine[1:counter]
+
     __speciesNames.append(tempSpecieName)
-    
     return
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -148,7 +145,7 @@ precondition      : no significant precondition
 postcondition     : aligned and "trimmed" genes are added to asequences.txt
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 def processAlignments():
-    
+
     # Forward reference
     global __sequences
     global __numberOfGenes
@@ -163,7 +160,7 @@ def processAlignments():
         alignments = pairwise2.align.globalds(__sequences[0], __sequences[x], blosum62, -10., -0.5)
 
         __alignedGenes.append(alignments[0][1]) #add alignment to aligned genes
-        
+
         print(__speciesNames[x] + ": ")
         print(pairwise2.format_alignment(*alignments[0]))
         print()
@@ -178,19 +175,18 @@ def processAlignments():
 
         __alignedGenesNorm.append(temp[0:shortestLength])
 
-    # Create MultipleSeqAlignment needed for creation of distance map 
+    # Create MultipleSeqAlignment needed for creation of distance map
     # (and phylogenetic tree)
-    
+
     # Bootstrap case (required by MultipleSeqAlignment constructor)
-    align1 = MultipleSeqAlignment([SeqRecord(Seq(__alignedGenesNorm[0], 
+    align1 = MultipleSeqAlignment([SeqRecord(Seq(__alignedGenesNorm[0],
                                    generic_dna,), id=__speciesNames[0])
                                    ])
 
     # Append each additional alignment to the MSA
     for x in range(1, __numberOfGenes):
-        align1.append(SeqRecord(Seq(__alignedGenesNorm[x], generic_dna,), 
+        align1.append(SeqRecord(Seq(__alignedGenesNorm[x], generic_dna,),
                                 id=__speciesNames[x]))
-
     #generate aligned file
     AlignIO.write(align1, "asequences.txt", "fasta")
 
@@ -223,33 +219,33 @@ def phyloTreeMaker(aln):
     #generate image file (will pop up)
     # Distance tree
     Phylo.draw(tree, show_confidence=True)
-    
+
 
     #Parsimony Tree
     scorer = ParsimonyScorer()
     searcher = NNITreeSearcher(scorer)
-    
+
     constructorParse = ParsimonyTreeConstructor(searcher, tree)
     parse_tree = constructorParse.build_tree(aln)
     Phylo.draw(parse_tree, show_confidence=True)
-    
+
     '''
     # This tree works, but is EXTREMELY slow. I'd suggest adjusting the
     # lower if it is taking too long. 100 seems to take 5-10 minutes,
     # but the higher the replication number, the better the results.
-    
+
     #Bootstrap (consensus trees)
-    
+
     replicationNumber = 100
-    
+
     calculatorCon = DistanceCalculator('blosum62')
     constructorCon = DistanceTreeConstructor(calculatorCon)
     treeCon = bootstrap_trees(aln, replicationNumber, constructorCon)
-    
+
     majority_tree = majority_consensus(treeCon, 0.5)
     Phylo.draw(majority_tree, show_confidence=True)
     '''
-    
+
     return
 
 main()
