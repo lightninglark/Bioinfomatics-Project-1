@@ -127,13 +127,8 @@ def speciesNameParser(headerLine):
 
     counter = 0 #counts length of name (in characters)
 
-    #changing using find method
-    # while headerLine[counter] != '|':
-        # counter += 1
-
     #everything after the < token until the first pipe
     tempSpecieName = headerLine[1:headerLine.find('|')]
-    # tempSpecieName = headerLine[1:counter]
 
     __speciesNames.append(tempSpecieName)
     return
