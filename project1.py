@@ -163,6 +163,8 @@ def processAlignments():
     # Find shortest length of all aligned genes (all genes must be same
     # character length)
     shortestLength = len(min(__alignedGenes, key=len))
+    
+    print("Shortest Length Gene:" + str(shortestLength))
 
     # trim all genes based on shortest length variable
     for x in range(0,__numberOfGenes):
